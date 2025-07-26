@@ -11,6 +11,12 @@ export const SITE = {
   author: "Emil Gulamov",
 };
 
+// Analytics Configuration
+export const ANALYTICS = {
+  GTM_ID: import.meta.env.GTM_ID || "GTM-XXXXXXX", // Replace with your GTM ID
+  GA_ID: import.meta.env.GA_ID || "", // Optional: Google Analytics ID if using GA4 directly
+};
+
 export const SEO = {
   title: SITE.title,
   description: SITE.description,

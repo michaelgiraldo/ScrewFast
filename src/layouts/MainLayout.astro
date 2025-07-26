@@ -3,7 +3,7 @@
 import Meta from "@components/Meta.astro";
 import Navbar from "@components/sections/navbar&footer/Navbar.astro";
 import FooterSection from "@components/sections/navbar&footer/FooterSection.astro";
-import { SITE } from "@data/constants";
+import { SITE, ANALYTICS } from "@data/constants";
 import "@styles/global.css";
 
 // Setting expected props
@@ -15,6 +15,9 @@ const {
   customDescription = null,
   customOgTitle = null,
 } = Astro.props;
+
+// Get GTM ID from constants
+const GTM_ID = ANALYTICS.GTM_ID;
 
 // Interface to type-check the properties
 interface Props {
@@ -29,6 +32,15 @@ interface Props {
 
 <html lang={lang} class="scrollbar-hide lenis lenis-smooth scroll-pt-16">
   <head>
+    {/* Google Tag Manager Head Script */}
+    <script is:inline define:vars={{ GTM_ID }}>
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer',GTM_ID);
+    </script>
+    
     {/* Adding metadata to the HTML document */}
     <Meta
       meta={meta}
@@ -57,6 +69,15 @@ interface Props {
   <body
     class="bg-neutral-200 selection:bg-yellow-400 selection:text-neutral-700 dark:bg-neutral-800 flex flex-col min-h-screen"
   >
+    {/* Google Tag Manager Body Script (noscript fallback) */}
+    <noscript>
+      <iframe 
+        src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+        height="0" 
+        width="0" 
+        style="display:none;visibility:hidden">
+      </iframe>
+    </noscript>
     {/*
     Setting up the main structure of the page.
     The Navbar is placed at the top, with a slot for the main content and FooterSection at the bottom.
